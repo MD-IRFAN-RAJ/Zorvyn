@@ -105,9 +105,9 @@ cd finance-backend
 npm install
 ```
 ## Create .env file:
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secret
-PORT=3000
+-MONGO_URI=your_mongodb_uri
+-JWT_SECRET=your_secret
+-PORT=3000
 
 ## Run server
 ```bash
@@ -115,10 +115,10 @@ npm run dev
 ```
 
 ## 🧠 Architecture Highlights
-Clean separation of concerns (routes → middleware → controllers → DB)
-Centralized validation and error handling
-Modular and scalable folder structure
-Optimized aggregation queries for analytics
+-Clean separation of concerns (routes → middleware → controllers → DB)
+-Centralized validation and error handling
+-Modular and scalable folder structure
+-Optimized aggregation queries for analytics
 
 
 ![alt text](image.png)
