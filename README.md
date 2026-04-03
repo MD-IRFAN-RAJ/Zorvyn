@@ -92,7 +92,7 @@ It demonstrates backend engineering concepts such as API design, role-based acce
 - PATCH `/api/users/:id/toggle`
 
 ## 📊 API Documentation
-Swagger available at: http://localhost:3000/api-docs
+Swagger available at: https://finance-backend-06bh.onrender.com/api-docs
 
 
 ---
