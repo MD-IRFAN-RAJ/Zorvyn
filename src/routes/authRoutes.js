@@ -2,6 +2,7 @@ const router = require("express").Router();
 const c = require("../controllers/authController");
 const validate = require("../middleware/validate");
 
+
 const {
   registerSchema,
   loginSchema

@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const c = require("../controllers/dashboardController");
-
+const role = require("../middleware/roleMiddleware");
 const auth = require("../middleware/authMiddleware");
 
 
@@ -14,9 +14,9 @@ const auth = require("../middleware/authMiddleware");
  *       200:
  *         description: Dashboard data
  */
-router.get("/", auth, c.getSummary);
-router.get("/categories", auth, c.getCategoryBreakdown);
-router.get("/trends", auth, c.getMonthlyTrends);
-router.get("/balance", auth, c.getNetBalance);
+router.get("/", auth, role(["admin", "analyst"]), c.getSummary);
+router.get("/categories", auth, role(["admin", "analyst"]), c.getCategoryBreakdown);
+router.get("/trends", auth, role(["admin", "analyst"]), c.getMonthlyTrends);
+router.get("/balance", auth, role(["admin", "analyst"]), c.getNetBalance);
 
 module.exports = router;

@@ -1,20 +1,10 @@
-const roles = require("../config/roles");
-
-module.exports = (requiredPermissions) => {
+module.exports = (allowedRoles) => {
   return (req, res, next) => {
-    const userRole = req.user.role;
-
-    const permissions = roles[userRole];
-
-    if (!permissions) {
-      return res.status(403).json({ message: "Invalid role" });
+    if (!req.user || !req.user.role) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const hasAccess = requiredPermissions.every(p =>
-      permissions.includes(p)
-    );
-
-    if (!hasAccess) {
+    if (!allowedRoles.includes(req.user.role)) {
       return res.status(403).json({ message: "Forbidden" });
     }
 
