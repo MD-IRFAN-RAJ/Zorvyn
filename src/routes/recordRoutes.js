@@ -4,6 +4,14 @@ const c = require("../controllers/recordController");
 const auth = require("../middleware/authMiddleware");
 const role = require("../middleware/roleMiddleware");
 const ownership = require("../middleware/ownershipMiddleware");
+const validate = require("../middleware/validate");
+
+const {
+  createRecordSchema,
+  updateRecordSchema,
+  recordIdParamSchema,
+  getRecordsQuerySchema
+} = require("../validators/recordValidator");
 
 /**
  * @swagger
@@ -12,7 +20,13 @@ const ownership = require("../middleware/ownershipMiddleware");
  *     summary: Create a financial record
  *     tags: [Records]
  */
-router.post("/", auth, role(["admin"]), c.createRecord);
+router.post(
+  "/",
+  auth,
+  role(["admin"]),
+  validate(createRecordSchema),
+  c.createRecord
+);
 
 /**
  * @swagger
@@ -21,7 +35,13 @@ router.post("/", auth, role(["admin"]), c.createRecord);
  *     summary: Get all financial records
  *     tags: [Records]
  */
-router.get("/", auth, role(["admin", "analyst", "viewer"]), c.getRecords);
+router.get(
+  "/",
+  auth,
+  role(["admin", "analyst", "viewer"]),
+  validate({ query: getRecordsQuerySchema }),
+  c.getRecords
+);
 
 /**
  * @swagger
@@ -30,7 +50,15 @@ router.get("/", auth, role(["admin", "analyst", "viewer"]), c.getRecords);
  *     summary: Update a record
  *     tags: [Records]
  */
-router.put("/:id", auth, role(["admin"]), ownership, c.updateRecord);
+router.put(
+  "/:id",
+  auth,
+  role(["admin"]),
+  validate({ params: recordIdParamSchema }),
+  ownership,
+  validate({ body: updateRecordSchema }),
+  c.updateRecord
+);
 
 /**
  * @swagger
@@ -39,6 +67,13 @@ router.put("/:id", auth, role(["admin"]), ownership, c.updateRecord);
  *     summary: Delete a record
  *     tags: [Records]
  */
-router.delete("/:id", auth, role(["admin"]), ownership, c.deleteRecord);
+router.delete(
+  "/:id",
+  auth,
+  role(["admin"]),
+  validate({ params: recordIdParamSchema }),
+  ownership,
+  c.deleteRecord
+);
 
 module.exports = router;

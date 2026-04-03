@@ -1,30 +1,59 @@
 const User = require("../models/users");
 
-// ✅ Get all users (admin)
+// GET USERS
 exports.getUsers = async (req, res) => {
-  const users = await User.find().select("-password");
-  res.json(users);
+  try {
+    const users = await User.find().select("-password");
+    res.json(users);
+  } catch {
+    res.status(500).json({ message: "Failed to fetch users" });
+  }
 };
 
-// ✅ Update role
+// UPDATE ROLE
 exports.updateRole = async (req, res) => {
-  const { role } = req.body;
+  try {
+    const { role } = req.body;
 
-  const user = await User.findByIdAndUpdate(
-    req.params.id,
-    { role },
-    { new: true }
-  );
+    if (!["viewer", "analyst", "admin"].includes(role)) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
 
-  res.json(user);
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { role },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+
+  } catch {
+    res.status(500).json({ message: "Failed to update role" });
+  }
 };
 
-// ✅ Activate / Deactivate user
+// TOGGLE STATUS
 exports.toggleUserStatus = async (req, res) => {
-  const user = await User.findById(req.params.id);
+  try {
+    const user = await User.findById(req.params.id);
 
-  user.isActive = !user.isActive;
-  await user.save();
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-  res.json({ message: "User status updated", user });
+    user.isActive = !user.isActive;
+    await user.save();
+
+    res.json({
+      message: "User status updated",
+      user
+    });
+
+  } catch {
+    res.status(500).json({ message: "Failed to update user status" });
+  }
 };

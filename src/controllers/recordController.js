@@ -1,11 +1,10 @@
 const Record = require("../models/record");
 
-// ✅ CREATE RECORD
+// CREATE
 exports.createRecord = async (req, res) => {
   try {
     const { amount, type, category, date, notes } = req.body;
 
-    // 🔥 Validation
     if (!amount || !type || !category) {
       return res.status(400).json({
         message: "amount, type and category are required"
@@ -32,11 +31,11 @@ exports.createRecord = async (req, res) => {
     res.status(201).json(record);
 
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ message: "Failed to create record" });
   }
 };
 
-// ✅ GET RECORDS (FILTER + PAGINATION)
+// GET
 exports.getRecords = async (req, res) => {
   try {
     const {
@@ -56,7 +55,6 @@ exports.getRecords = async (req, res) => {
     if (type) query.type = type;
     if (category) query.category = category;
 
-    // 🔥 Date filter
     if (startDate || endDate) {
       query.date = {};
       if (startDate) query.date.$gte = new Date(startDate);
@@ -74,12 +72,12 @@ exports.getRecords = async (req, res) => {
       data: records
     });
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch {
+    res.status(500).json({ message: "Failed to fetch records" });
   }
 };
 
-// ✅ UPDATE RECORD
+// UPDATE
 exports.updateRecord = async (req, res) => {
   try {
     const { amount, type, category, date, notes } = req.body;
@@ -91,7 +89,7 @@ exports.updateRecord = async (req, res) => {
         isDeleted: false
       },
       {
-        ...(amount && { amount }),
+        ...(amount !== undefined && { amount }),
         ...(type && { type }),
         ...(category && { category }),
         ...(date && { date: new Date(date) }),
@@ -106,12 +104,12 @@ exports.updateRecord = async (req, res) => {
 
     res.json(record);
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch {
+    res.status(500).json({ message: "Failed to update record" });
   }
 };
 
-// ✅ DELETE (SOFT DELETE + USER CHECK)
+// DELETE
 exports.deleteRecord = async (req, res) => {
   try {
     const record = await Record.findOneAndUpdate(
@@ -129,7 +127,7 @@ exports.deleteRecord = async (req, res) => {
 
     res.json({ message: "Record deleted", record });
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch {
+    res.status(500).json({ message: "Failed to delete record" });
   }
 };

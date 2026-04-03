@@ -39,9 +39,9 @@ exports.getSummary = async (req, res) => {
       netBalance: result.income - result.expense
     });
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch {
+  res.status(500).json({ message: "Failed to fetch dashboard data" });
+}
 };
 
 // CATEGORY BREAKDOWN
@@ -60,9 +60,9 @@ exports.getCategoryBreakdown = async (req, res) => {
 
     res.json(data);
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch {
+  res.status(500).json({ message: "Failed to fetch dashboard data" });
+}
 };
 
 // MONTHLY TRENDS
@@ -93,9 +93,9 @@ exports.getMonthlyTrends = async (req, res) => {
 
     res.json(data);
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch {
+  res.status(500).json({ message: "Failed to fetch dashboard data" });
+}
 };
 
 // NET BALANCE = Total Income - Total Expense
@@ -128,7 +128,7 @@ exports.getNetBalance = async (req, res) => {
       netBalance: result.income - result.expense
     });
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch {
+  res.status(500).json({ message: "Failed to fetch dashboard data" });
+}
 };
