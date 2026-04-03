@@ -15,5 +15,8 @@ const auth = require("../middleware/authMiddleware");
  *         description: Dashboard data
  */
 router.get("/", auth, c.getSummary);
+router.get("/categories", auth, c.getCategoryBreakdown);
+router.get("/trends", auth, c.getMonthlyTrends);
+router.get("/balance", auth, c.getNetBalance);
 
 module.exports = router;
